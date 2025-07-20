@@ -45,7 +45,9 @@ const PhotoToImageSection = () => {
         formData.append("prompt", prompt);
 
         try {
-            const API_URL = 'http://localhost:1205/api/v1/generate';
+            const API_URL = `${import.meta.env.VITE_API_BASE_URL}/generate`;
+            console.log("Sending request to:", API_URL);
+            
             const response = await fetch(API_URL, {
                 method: 'POST',
                 body: formData,
