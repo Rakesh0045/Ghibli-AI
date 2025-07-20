@@ -10,15 +10,24 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("api/v1")
-@CrossOrigin(origins = {"http://localhost:5173", "http://127.0.0.1:5173", "https://ghibli-ai.netlify.app/"})
 @RequiredArgsConstructor
 public class GenerationController {
 
     private final GhibliArtService ghibliArtService;
 
+    @CrossOrigin(
+        origins = {
+            "http://localhost:5173",
+            "http://127.0.0.1:5173",
+            "https://ghibli-ai.netlify.app"
+        },
+        methods = {RequestMethod.POST, RequestMethod.OPTIONS},
+        allowedHeaders = "*"
+    )
     @PostMapping(value = "/generate", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> generateGhibliArt(@RequestParam("image")MultipartFile image,
-                                                    @RequestParam("prompt")String prompt){
+    public ResponseEntity<byte[]> generateGhibliArt(
+            @RequestParam("image") MultipartFile image,
+            @RequestParam("prompt") String prompt) {
         try {
             byte[] imageBytes = ghibliArtService.createGhibliArt(image, prompt);
             return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(imageBytes);
@@ -28,15 +37,25 @@ public class GenerationController {
         }
     }
 
+    @CrossOrigin(
+        origins = {
+            "http://localhost:5173",
+            "http://127.0.0.1:5173",
+            "https://ghibli-ai.netlify.app"
+        },
+        methods = {RequestMethod.POST, RequestMethod.OPTIONS},
+        allowedHeaders = "*"
+    )
     @PostMapping(value = "/generate-from-text", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> generateGhibliArtFromText(@RequestBody TextGenerationRequestDTO requestDTO) {
+    public ResponseEntity<byte[]> generateGhibliArtFromText(
+            @RequestBody TextGenerationRequestDTO requestDTO) {
         try {
-            byte[] imageBytes = ghibliArtService.createGhibliArtFromText(requestDTO.getPrompt(), requestDTO.getStyle());
+            byte[] imageBytes = ghibliArtService.createGhibliArtFromText(
+                    requestDTO.getPrompt(), requestDTO.getStyle());
             return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(imageBytes);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }
-
 }
