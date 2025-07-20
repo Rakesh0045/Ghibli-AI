@@ -31,7 +31,7 @@ const PhotoToImageSection = () => {
             return;
         }
 
-        // ✅ Check if file is an image
+        // ✅ Check if file is image
         if (file.type.startsWith("image/")) {
             const img = new Image();
             img.onload = () => {
