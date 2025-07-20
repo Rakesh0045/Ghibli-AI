@@ -25,7 +25,7 @@ const TextToImageSection = () => {
         const payload = { prompt, style };
 
         try {
-            // const API_URL = 'http://localhost:1205/api/v1/generate-from-text';
+            // const API_URL = 'http://localhost:8080/api/v1/generate-from-text';
             const API_URL = `${import.meta.env.VITE_API_BASE_URL}/generate-from-text`;
             console.log("Sending request to:", API_URL);
 
