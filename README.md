@@ -11,7 +11,7 @@ Turn your thoughts or photos into Studio Ghibli-style masterpieces using AI. Pow
 ## 🌐 Live Demo
 
 - 🖼️ **Frontend**: [ghibli-ai.netlify.app](https://ghibli-ai.netlify.app)  
-- 🔗 **Backend API**: [ghibli-api.onrender.com](https://ghibli-ai-backend.onrender.com)
+- 🔗 **Backend API**: [ghibli-ai-backend.onrender.com](https://ghibli-ai-backend.onrender.com)
 
 
 ---
