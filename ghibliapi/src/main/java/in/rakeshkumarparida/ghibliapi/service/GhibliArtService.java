@@ -19,7 +19,7 @@ public class GhibliArtService {
 
     public byte[] createGhibliArt(MultipartFile image, String prompt){
         String finalPrompt = prompt+", in the beautiful, detailed anime style of studio ghibli.";
-        String engineId = "stable-diffusion-v1-6";
+        String engineId = "stable-diffusion-xl-1024-v1-0";
         String stylePreset = "anime";
 
         return stabilityAIClient.generateImageFromImage(
@@ -32,16 +32,26 @@ public class GhibliArtService {
     }
 
     public byte[] createGhibliArtFromText(String prompt, String style) {
-        String finalPrompt = prompt+", in the beautiful, detailed anime style of studio ghibli.";
-        String engineId = "stable-diffusion-v1-6";
+        // String finalPrompt = prompt+", in the beautiful, detailed anime style of studio ghibli.";
+        // String engineId = "stable-diffusion-v1-6";
+        // String stylePreset = style.equals("general") ? "anime" : style.replace("_", "-");
+
+        // TextToImageRequest requestPayload = new TextToImageRequest(finalPrompt, stylePreset);
+
+        // return stabilityAIClient.generateImageFromText(
+        //         "Bearer " + apiKey,
+        //         engineId,
+        //         requestPayload
+        // );
+
+        String finalPrompt = "Transform this image into a Studio Ghibli-style illustration while preserving the subject's features, pose, and composition. " + prompt;
+        String engineId = "stable-diffusion-xl-1024-v1-0";
         String stylePreset = style.equals("general") ? "anime" : style.replace("_", "-");
 
         TextToImageRequest requestPayload = new TextToImageRequest(finalPrompt, stylePreset);
 
         return stabilityAIClient.generateImageFromText(
-                "Bearer " + apiKey,
-                engineId,
-                requestPayload
+                "Bearer " + apiKey, engineId, requestPayload
         );
     }
 
