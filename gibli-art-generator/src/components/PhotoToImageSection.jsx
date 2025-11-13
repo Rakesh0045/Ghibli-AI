@@ -18,8 +18,19 @@ const PhotoToImageSection = () => {
     const onBrowseClick = () => fileInputRef.current.click();
 
     const MAX_FILE_SIZE_MB = 10;
-    const MIN_DIMENSION = 320;
-    const MAX_DIMENSION = 1536;
+
+    // Allowed dimensions for stable-diffusion-xl-1024-v0-9 and stable-diffusion-xl-1024-v1-0
+    const ALLOWED_DIMENSIONS = [
+        [1024, 1024],
+        [1152, 896],
+        [1216, 832],
+        [1344, 768],
+        [1536, 640],
+        [640, 1536],
+        [768, 1344],
+        [832, 1216],
+        [896, 1152],
+    ];
     const handleFileChange = (file) => {
         if (!file) return;
 
@@ -37,13 +48,12 @@ const PhotoToImageSection = () => {
             img.onload = () => {
                 const { width, height } = img;
 
-                // ✅ Check min & max dimensions
-                if (
-                    width < MIN_DIMENSION || height < MIN_DIMENSION ||
-                    width > MAX_DIMENSION || height > MAX_DIMENSION
-                ) {
+                // ✅ Check allowed exact dimensions (Stability AI SDXL constraints)
+                const isAllowed = ALLOWED_DIMENSIONS.some(([w, h]) => w === width && h === height);
+                if (!isAllowed) {
+                    const allowedList = ALLOWED_DIMENSIONS.map(([w, h]) => `${w}x${h}`).join(', ');
                     setError(
-                        `Image dimensions must be between ${MIN_DIMENSION}x${MIN_DIMENSION} and ${MAX_DIMENSION}x${MAX_DIMENSION} pixels.`
+                        `Image dimensions must be one of the allowed sizes: ${allowedList}. We received ${width}x${height}.` 
                     );
                     setUploadedFile(null);
                     setUploadedImage(null);
@@ -135,6 +145,9 @@ const PhotoToImageSection = () => {
             <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg flex flex-col">
                 <h2 className="text-xl font-semibold mb-4">Photo to Ghibli Art</h2>
                 <div className="flex-grow border-2 border-dashed border-gray-300 rounded-xl flex flex-col justify-center items-center text-center p-6 transition-colors">
+                    <div className="mb-4 p-3 rounded-lg bg-yellow-50 border border-yellow-200 text-sm text-yellow-800 w-full text-left">
+                        <strong>Note:</strong> The free model only accepts specific image sizes. Please upload an image with one of the following exact dimensions: 1024x1024, 1152x896, 1216x832, 1344x768, 1536x640, 640x1536, 768x1344, 832x1216, 896x1152.
+                    </div>
                     {uploadedImage ? (
                         <img src={uploadedImage} alt="Uploaded preview" className="max-h-80 w-auto rounded-lg object-contain" />
                     ) : (
